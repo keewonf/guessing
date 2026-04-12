@@ -1,0 +1,32 @@
+:root {
+  font-size: 16px;
+  --bg-color-secondary: #6363db;
+  --green-100: #e1f5ec;
+  -green-300: #03ab4f;
+  --orange-100: #ffcf62;
+  --orange-300: #691b0a;
+  --purple-100: #ebebfc;
+  --purple-300: #4f4fb9;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #f5f5fa;
+
+  font-family: "Noto Sans", serif;
+  font-optical-sizing: auto;
+}
+
+button {
+  cursor: pointer;
+  transition: filter 0.2s;
+}
+
+button:hover {
+  filter: brightness(0.9);
+}
