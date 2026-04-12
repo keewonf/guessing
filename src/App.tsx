@@ -1,16 +1,19 @@
-import { Header } from "./components/Header";
 import styles from "./app.module.css";
 
+import { Header } from "./components/Header";
+import { Tip } from "./components/Tip";
+
 function App() {
-  function handleRestartGame(){
-    alert("Reiniciar o jogo!")
+  function handleRestartGame() {
+    alert("Reiniciar o jogo!");
   }
 
   return (
     <div className={styles.container}>
       <main>
-        <Header current={5} max={10} onRestart={handleRestartGame}/>
-        <h1>Hello World!</h1>
+        <Header current={5} max={10} onRestart={handleRestartGame} />
+        
+        <Tip tip="Biblioteca para criar interfaces Web com Javascript." />
       </main>
     </div>
   );
