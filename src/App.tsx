@@ -4,6 +4,7 @@ import { Button } from "./components/Button";
 import { Header } from "./components/Header";
 import { Input } from "./components/Input";
 import { Letter } from "./components/Letter";
+import { LettersUsed } from "./components/LettersUsed";
 import { Tip } from "./components/Tip";
 
 function App() {
@@ -29,8 +30,11 @@ function App() {
 
         <div className={styles.guess}>
           <Input autoFocus maxLength={1} placeholder="?" />
-          <Button>
-            Confirmar </Button>
+          <Button>Confirmar </Button>
+        </div>
+        <div className={styles.lettersUsedContainer}>
+          <h5>Letras utilizadas</h5>
+          <LettersUsed />
         </div>
       </main>
     </div>
