@@ -24,3 +24,15 @@
   font-weight: 500;
   border: 1px solid var(--bg-color-secondary);
 }
+
+.letterCorrect {
+  background-color: var(--green-100);
+  border-color: var(--green-300);
+  color: var(--green-300);
+}
+
+.letterWrong {
+  background-color: var(--orange-100);
+  color: #000000;
+  border-color: var(--orange-300);
+}
