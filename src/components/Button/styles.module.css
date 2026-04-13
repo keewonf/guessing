@@ -1,0 +1,14 @@
+.button {
+  height: 2.875rem;
+  border-radius: 0.43rem;
+
+  background-color: var(--bg-color-secondary);
+  border: 2px solid var(--purple-300);
+  color: #ffffff;
+
+  padding-inline: 0.875rem;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: auto;
+  letter-spacing: 0;
+}

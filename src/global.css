@@ -26,6 +26,7 @@ input {
 }
 
 button {
+  font-family: "Noto Sans", serif;
   cursor: pointer;
   transition: filter 0.2s;
 }
