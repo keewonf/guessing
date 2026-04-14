@@ -76,9 +76,18 @@ function App() {
 
         <Tip tip={challenge.tip} />
         <div className={styles.word}>
-          {challenge.word.split("").map(() => (
-            <Letter />
-          ))}
+          {challenge.word.split("").map((letter, index) => {
+            const letterUsed = lettersUsed.find(
+              (used) => used.value.toUpperCase() === letter.toUpperCase(),
+            );
+            return (
+              <Letter
+                key={index}
+                value={letterUsed?.value}
+                color={letterUsed?.correct ? "correct" : "default"}
+              />
+            );
+          })}
         </div>
 
         <h4>Palpite</h4>
