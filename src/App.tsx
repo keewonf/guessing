@@ -12,7 +12,7 @@ import { Tip } from "./components/Tip";
 
 function App() {
   const [attempts, setAttempts] = useState(0);
-  const [letter, setLetter] = useState("")
+  const [letter, setLetter] = useState("");
   const [challenge, setChallenge] = useState<Challenge | null>(null);
 
   function handleRestartGame() {
@@ -26,12 +26,16 @@ function App() {
     setChallenge(randomWord);
 
     setAttempts(0);
-    setLetter("")
+    setLetter("");
   }
 
   useEffect(() => {
     startGame(WORDS);
   }, []);
+
+  if (!challenge) {
+    return;
+  }
 
   return (
     <div className={styles.container}>
@@ -40,11 +44,9 @@ function App() {
 
         <Tip tip="Biblioteca para criar interfaces Web com Javascript." />
         <div className={styles.word}>
-          <Letter value="R" />
-          <Letter />
-          <Letter />
-          <Letter />
-          <Letter />
+          {challenge.word.split("").map((l) => (
+            <Letter />
+          ))}
         </div>
 
         <h4>Palpite</h4>
