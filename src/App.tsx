@@ -12,7 +12,6 @@ import { Tip } from "./components/Tip";
 
 function App() {
   const [score, setScore] = useState(0);
-  const [attempts, setAttempts] = useState(0);
   const [letter, setLetter] = useState("");
   const [lettersUsed, setLettersUsed] = useState<LettersUsedProps[]>([]);
   const [challenge, setChallenge] = useState<Challenge | null>(null);
@@ -27,8 +26,9 @@ function App() {
     const randomWord = words[index];
     setChallenge(randomWord);
 
-    setAttempts(0);
+    setScore(0);
     setLetter("");
+    setLettersUsed([]);
   }
 
   function handleConfirm() {
@@ -72,7 +72,7 @@ function App() {
   return (
     <div className={styles.container}>
       <main>
-        <Header current={attempts} max={10} onRestart={handleRestartGame} />
+        <Header current={score} max={10} onRestart={handleRestartGame} />
 
         <Tip tip={challenge.tip} />
         <div className={styles.word}>
