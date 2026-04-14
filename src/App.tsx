@@ -11,6 +11,7 @@ import { LettersUsed, type LettersUsedProps } from "./components/LettersUsed";
 import { Tip } from "./components/Tip";
 
 function App() {
+  const [score, setScore] = useState(0);
   const [attempts, setAttempts] = useState(0);
   const [letter, setLetter] = useState("");
   const [lettersUsed, setLettersUsed] = useState<LettersUsedProps[]>([]);
@@ -30,6 +31,36 @@ function App() {
     setLetter("");
   }
 
+  function handleConfirm() {
+    if (!challenge) {
+      return;
+    }
+    if (!letter.trim()) {
+      return alert("Digite uma letra!");
+    }
+
+    const value = letter.toUpperCase();
+    const exists = lettersUsed.find(
+      (used) => used.value.toUpperCase() === value,
+    );
+    if (exists) {
+      return alert("Você já utilizou a letra " + value);
+    }
+
+    const challengeLetters = challenge.word.toUpperCase().split("");
+    const hits = challengeLetters.filter((char) => {
+      return char.toUpperCase() === value;
+    }).length;
+
+    const correct = hits > 0;
+    const currentScore = score + hits;
+
+    setLettersUsed((prevState) => [...prevState, { value, correct }]);
+    setScore(currentScore);
+
+    setLetter("");
+  }
+
   useEffect(() => {
     startGame(WORDS);
   }, []);
@@ -43,9 +74,9 @@ function App() {
       <main>
         <Header current={attempts} max={10} onRestart={handleRestartGame} />
 
-        <Tip tip="Biblioteca para criar interfaces Web com Javascript." />
+        <Tip tip={challenge.tip} />
         <div className={styles.word}>
-          {challenge.word.split("").map((l) => (
+          {challenge.word.split("").map(() => (
             <Letter />
           ))}
         </div>
@@ -53,8 +84,14 @@ function App() {
         <h4>Palpite</h4>
 
         <div className={styles.guess}>
-          <Input autoFocus maxLength={1} placeholder="?" />
-          <Button>Confirmar </Button>
+          <Input
+            autoFocus
+            maxLength={1}
+            placeholder="?"
+            value={letter}
+            onChange={(e) => setLetter(e.target.value)}
+          />
+          <Button onClick={handleConfirm}>Confirmar </Button>
         </div>
         <div className={styles.lettersUsedContainer}>
           <h5>Letras utilizadas</h5>
