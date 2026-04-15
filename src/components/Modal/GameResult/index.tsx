@@ -17,6 +17,8 @@ export function GameResult({
   maxAttempts,
 }: GameResultProps) {
   let difficulty = "Fácil";
+  const isWin = status === "win";
+  const title = isWin ? "Parabéns!" : "Que pena!";
   if (challenge.word.length >= 5) {
     difficulty = "Médio";
   }
@@ -27,7 +29,8 @@ export function GameResult({
   return (
     <div className={styles.container}>
       <div className={styles.content}>
-        <h1>resultados</h1>
+        <h1>{title}</h1>
+        <h2>resultados</h2>
         <div className={styles.statsContainer}>
           <div className={styles.stat}>
             <strong>{attempts}</strong>
