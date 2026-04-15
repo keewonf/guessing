@@ -19,6 +19,7 @@ function App() {
   const [result, setResult] = useState<GameStatus | null>(null);
 
   const ATTEMPTS_MARGIN = 2;
+  const maxAttempts = (challenge?.word.length ?? 0) + ATTEMPTS_MARGIN;
 
   function handleRestartGame() {
     const isConfirmed = window.confirm(
@@ -90,19 +91,20 @@ function App() {
     if (!challenge) {
       return;
     }
+
     const timeout = setTimeout(() => {
       if (score === challenge.word.length) {
         endGame("win");
       }
 
-      if (lettersUsed.length === challenge.word.length + ATTEMPTS_MARGIN) {
+      if (lettersUsed.length === maxAttempts) {
         endGame("lose");
       }
     }, 200);
     return () => {
       clearTimeout(timeout);
     };
-  }, [score, lettersUsed.length, challenge]);
+  }, [score, lettersUsed.length, challenge, maxAttempts]);
 
   if (!challenge) {
     return;
@@ -113,7 +115,7 @@ function App() {
       <main>
         <Header
           current={lettersUsed.length}
-          max={challenge.word.length + ATTEMPTS_MARGIN}
+          max={maxAttempts}
           onRestart={handleRestartGame}
         />
 
@@ -153,7 +155,14 @@ function App() {
           <LettersUsed data={lettersUsed} />
         </div>
       </main>
-      {result !== null && <GameResult status={result} />}
+      {result !== null && (
+        <GameResult
+          challenge={challenge}
+          attempts={lettersUsed.length}
+          status={result}
+          maxAttempts={maxAttempts}
+        />
+      )}
     </div>
   );
 }
