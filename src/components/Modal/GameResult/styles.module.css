@@ -78,17 +78,22 @@
   justify-content: center;
   align-items: center;
   gap: 1rem;
+  text-align: center;
 }
 
 .wordInfoContainer p {
   font-weight: bold;
 }
 
-.wordInfoContainer strong {
+.wordLabel {
+  margin: 0;
+}
+
+.dayWord {
   color: var(--orange-300);
   font-weight: bold;
   font-size: 3rem;
-  display: block;
+  line-height: 1;
 }
 
 @keyframes cardFadeIn {

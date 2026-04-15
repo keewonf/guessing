@@ -46,9 +46,10 @@ export function GameResult({
           </div>
         </div>
         <div className={styles.wordInfoContainer}>
-          <p>
-            A palavra do dia era <strong>{challenge.word.toUpperCase()}</strong>
-          </p>
+          <p className={styles.wordLabel}>A palavra do dia era</p>
+          <strong className={styles.dayWord}>
+            {challenge.word.toUpperCase()}
+          </strong>
 
           <p>{challenge.tip}</p>
         </div>
