@@ -136,13 +136,13 @@ function App() {
           })}
         </div>
 
-        <h4>Palpite</h4>
+        <h4>Digite sua letra: </h4>
 
         <div className={styles.guess}>
           <Input
             autoFocus
             maxLength={1}
-            placeholder="?"
+            placeholder=""
             value={letter}
             onChange={(e) => setLetter(e.target.value)}
             disabled={result !== null}
