@@ -9,6 +9,7 @@ import { Input } from "./components/Input";
 import { Letter } from "./components/Letter";
 import { LettersUsed, type LettersUsedProps } from "./components/LettersUsed";
 import { Tip } from "./components/Tip";
+import { GameResult } from "./components/Modal/GameResult";
 
 function App() {
   const [score, setScore] = useState(0);
@@ -141,6 +142,7 @@ function App() {
           <LettersUsed data={lettersUsed} />
         </div>
       </main>
+      <GameResult status="win" />
     </div>
   );
 }
