@@ -1,7 +1,9 @@
 import styles from "./styles.module.css";
 
+export type GameStatus = "win" | "lose";
+
 type GameResultProps = {
-  status: "win" | "lose";
+  status: GameStatus;
 };
 
 export function GameResult({ status }: GameResultProps) {

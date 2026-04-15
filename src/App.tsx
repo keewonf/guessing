@@ -9,13 +9,14 @@ import { Input } from "./components/Input";
 import { Letter } from "./components/Letter";
 import { LettersUsed, type LettersUsedProps } from "./components/LettersUsed";
 import { Tip } from "./components/Tip";
-import { GameResult } from "./components/Modal/GameResult";
+import { GameResult, type GameStatus } from "./components/Modal/GameResult";
 
 function App() {
   const [score, setScore] = useState(0);
   const [letter, setLetter] = useState("");
   const [lettersUsed, setLettersUsed] = useState<LettersUsedProps[]>([]);
   const [challenge, setChallenge] = useState<Challenge | null>(null);
+  const [result, setResult] = useState<GameStatus | null>(null);
 
   const ATTEMPTS_MARGIN = 2;
 
@@ -25,6 +26,7 @@ function App() {
     );
 
     if (isConfirmed) {
+      setResult(null);
       startGame(WORDS);
     }
   }
@@ -41,6 +43,10 @@ function App() {
   }
 
   function handleConfirm() {
+    if (result !== null) {
+      return;
+    }
+
     if (!challenge) {
       return;
     }
@@ -71,9 +77,9 @@ function App() {
     setLetter("");
   }
 
-  function endGame(message: string) {
-    alert(message);
-    startGame(WORDS);
+  function endGame(result: GameStatus) {
+    setResult(result);
+    //startGame(WORDS);
   }
 
   useEffect(() => {
@@ -84,16 +90,18 @@ function App() {
     if (!challenge) {
       return;
     }
-
-    setTimeout(() => {
+    const timeout = setTimeout(() => {
       if (score === challenge.word.length) {
-        return endGame("Parabéns, você descobriu a palavra!");
+        endGame("win");
       }
 
       if (lettersUsed.length === challenge.word.length + ATTEMPTS_MARGIN) {
-        return endGame("Que pena, você usou todas as tentativas!");
+        endGame("lose");
       }
     }, 200);
+    return () => {
+      clearTimeout(timeout);
+    };
   }, [score, lettersUsed.length, challenge]);
 
   if (!challenge) {
@@ -134,15 +142,18 @@ function App() {
             placeholder="?"
             value={letter}
             onChange={(e) => setLetter(e.target.value)}
+            disabled={result !== null}
           />
-          <Button onClick={handleConfirm}>Confirmar </Button>
+          <Button onClick={handleConfirm} disabled={result !== null}>
+            Confirmar{" "}
+          </Button>
         </div>
         <div className={styles.lettersUsedContainer}>
           <h5>Letras utilizadas</h5>
           <LettersUsed data={lettersUsed} />
         </div>
       </main>
-      <GameResult status="win" />
+      {result !== null && <GameResult status={result} />}
     </div>
   );
 }
