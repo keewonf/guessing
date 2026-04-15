@@ -37,7 +37,7 @@ export function GameResult({
             <span>chances usadas</span>
           </div>
           <div className={styles.stat}>
-            <strong>{maxAttempts - challenge.word.length}</strong>
+            <strong>{maxAttempts - attempts}</strong>
             <span>chances restantes</span>
           </div>
           <div className={styles.stat}>
