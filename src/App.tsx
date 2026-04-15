@@ -17,6 +17,7 @@ function App() {
   const [lettersUsed, setLettersUsed] = useState<LettersUsedProps[]>([]);
   const [challenge, setChallenge] = useState<Challenge | null>(null);
   const [result, setResult] = useState<GameStatus | null>(null);
+  const wrongAttempts = lettersUsed.filter((item) => !item.correct).length;
 
   const ATTEMPTS_MARGIN = 2;
   const maxAttempts = (challenge?.word.length ?? 0) + ATTEMPTS_MARGIN;
@@ -161,6 +162,7 @@ function App() {
           attempts={lettersUsed.length}
           status={result}
           maxAttempts={maxAttempts}
+          wrongAttempts={wrongAttempts}
         />
       )}
     </div>

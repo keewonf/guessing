@@ -8,24 +8,51 @@ type GameResultProps = {
   challenge: Challenge;
   attempts: number;
   maxAttempts: number;
+  wrongAttempts: number;
 };
+
+function getDifficultyByWordLength(wordLength: number) {
+  if (wordLength >= 8) {
+    return "Difícil";
+  }
+
+  if (wordLength >= 5) {
+    return "Médio";
+  }
+
+  return "Fácil";
+}
+
+function getWinMessage(extraAttempts: number, wrongAttempts: number) {
+  const extraAttemptsUsed = Math.min(extraAttempts, wrongAttempts);
+  const extraAttemptsLeft = Math.max(0, extraAttempts - wrongAttempts);
+
+  if (extraAttemptsUsed === 0) {
+    return "Perfeito!";
+  }
+
+  if (extraAttemptsLeft > 0) {
+    return "Boa!";
+  }
+
+  return "Ufa!";
+}
 
 export function GameResult({
   status,
   challenge,
   attempts,
   maxAttempts,
+  wrongAttempts,
 }: GameResultProps) {
-  let difficulty = "Fácil";
   const isWin = status === "win";
-  const title = isWin ? "Parabéns!" : "Que pena!";
-  if (challenge.word.length >= 5) {
-    difficulty = "Médio";
-  }
+  const difficulty = getDifficultyByWordLength(challenge.word.length);
+  const extraAttempts = maxAttempts - challenge.word.length;
+  const winMessage = getWinMessage(extraAttempts, wrongAttempts);
+  const remainingAttempts = maxAttempts - attempts;
 
-  if (challenge.word.length >= 8) {
-    difficulty = "Difícil";
-  }
+  const title = isWin ? winMessage : "Que pena!";
+
   return (
     <div className={styles.container}>
       <div className={styles.content}>
@@ -34,11 +61,11 @@ export function GameResult({
         <div className={styles.statsContainer}>
           <div className={styles.stat}>
             <strong>{attempts}</strong>
-            <span>chances usadas</span>
+            <span>tentativas</span>
           </div>
           <div className={styles.stat}>
-            <strong>{maxAttempts - attempts}</strong>
-            <span>chances restantes</span>
+            <strong>{remainingAttempts}</strong>
+            <span>tentativas restantes</span>
           </div>
           <div className={styles.stat}>
             <strong>{difficulty}</strong>
