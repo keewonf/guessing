@@ -78,7 +78,7 @@ export function GameResult({
             {challenge.word.toUpperCase()}
           </strong>
 
-          <p>{challenge.tip}</p>
+          <p>{challenge.trivia}</p>
         </div>
       </div>
     </div>
