@@ -8,7 +8,7 @@ import { Header } from "./components/Header";
 import { Input } from "./components/Input";
 import { Letter } from "./components/Letter";
 import { LettersUsed, type LettersUsedProps } from "./components/LettersUsed";
-import { Tip } from "./components/Tip";
+import { Tips } from "./components/Tips";
 import { GameResult, type GameStatus } from "./components/Modal/GameResult";
 
 function App() {
@@ -18,6 +18,7 @@ function App() {
   const [challenge, setChallenge] = useState<Challenge | null>(null);
   const [result, setResult] = useState<GameStatus | null>(null);
   const wrongAttempts = lettersUsed.filter((item) => !item.correct).length;
+  
 
   const ATTEMPTS_MARGIN = 2;
   const maxAttempts = (challenge?.word.length ?? 0) + ATTEMPTS_MARGIN;
@@ -35,9 +36,9 @@ function App() {
 
   function startGame(words: Challenge[]) {
     if (words.length === 0) return null;
-    const index = Math.floor(Math.random() * words.length);
-    const randomWord = words[index];
-    setChallenge(randomWord);
+    //const index = Math.floor(Math.random() * words.length);
+    //const randomWord = words[index];
+    setChallenge(words[1]);
 
     setScore(0);
     setLetter("");
@@ -120,7 +121,7 @@ function App() {
           onRestart={handleRestartGame}
         />
 
-        <Tip tip={challenge.tip} />
+        <Tips tips={challenge.tips} />
         <div className={styles.word}>
           {challenge.word.split("").map((letter, index) => {
             const letterUsed = lettersUsed.find(
