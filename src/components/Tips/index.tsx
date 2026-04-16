@@ -31,7 +31,7 @@ export function Tips({ tips }: TipsProps) {
           </button>
         </div>
 
-        <p>{tips[tipIndex] ?? "Sem dicas"}</p>
+        <p className={styles.tipText}>{tips[tipIndex] ?? "Sem dicas"}</p>
       </div>
     </div>
   );

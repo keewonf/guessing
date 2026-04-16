@@ -60,3 +60,8 @@
   box-shadow: 0 0 0 0.35rem rgba(0, 0, 0, 0.08);
   transform: scale(1.04);
 }
+
+.tipText {
+  line-height: 1.4;
+  min-height: calc(1em * 1.4 * 2.1);
+}
