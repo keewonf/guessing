@@ -9,6 +9,7 @@ import { LettersUsed, type LettersUsedProps } from "./components/LettersUsed";
 import { Tips } from "./components/Tips";
 import { GameResult, type GameStatus } from "./components/Modal/GameResult";
 import { GuessForm } from "./components/GuessForm";
+import { removeAccents } from "./utils/string";
 
 function App() {
   const [score, setScore] = useState(0);
@@ -20,6 +21,9 @@ function App() {
   const [isResultModalOpen, setIsResultModalOpen] = useState(false);
   const wrongAttempts = lettersUsed.filter((item) => !item.correct).length;
   const isWin = result === "win";
+  const normalizedWord = challenge
+    ? removeAccents(challenge.word.toUpperCase())
+    : "";
 
   const ATTEMPTS_MARGIN = 2;
   const maxAttempts = (challenge?.word.length ?? 0) + ATTEMPTS_MARGIN;
@@ -64,18 +68,16 @@ function App() {
       return alert("Digite uma letra!");
     }
 
-    const value = letter.toUpperCase();
-    const exists = lettersUsed.find(
-      (used) => used.value.toUpperCase() === value,
-    );
+    const value = removeAccents(letter.toUpperCase());
+    const exists = lettersUsed.find((used) => used.value === value);
     if (exists) {
       setLetter("");
       return alert("Você já utilizou a letra " + value);
     }
 
-    const challengeLetters = challenge.word.toUpperCase().split("");
+    const challengeLetters = normalizedWord.split("");
     const hits = challengeLetters.filter((char) => {
-      return char.toUpperCase() === value;
+      return char === value;
     }).length;
 
     const correct = hits > 0;
@@ -97,8 +99,8 @@ function App() {
 
     if (!challenge) return;
 
-    const guess = wordGuess.trim().toUpperCase();
-    const correct = challenge.word.toUpperCase();
+    const guess = removeAccents(wordGuess.trim().toUpperCase());
+    const correct = normalizedWord;
 
     if (!guess) {
       return alert("Digite uma palavra!");
@@ -138,7 +140,7 @@ function App() {
     }
 
     const timeout = setTimeout(() => {
-      if (score === challenge.word.length) {
+      if (score === normalizedWord.length) {
         endGame("win");
       }
 
@@ -149,7 +151,7 @@ function App() {
     return () => {
       clearTimeout(timeout);
     };
-  }, [score, lettersUsed.length, challenge, maxAttempts]);
+  }, [score, lettersUsed.length, challenge, maxAttempts, normalizedWord]);
 
   if (!challenge) {
     return;
@@ -168,7 +170,9 @@ function App() {
         <div className={styles.word}>
           {challenge.word.split("").map((letter, index) => {
             const letterUsed = lettersUsed.find(
-              (used) => used.value.toUpperCase() === letter.toUpperCase(),
+              (used) =>
+                used.value.toUpperCase() ===
+                removeAccents(letter.toUpperCase()),
             );
             return (
               <Letter
