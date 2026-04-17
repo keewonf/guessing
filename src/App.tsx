@@ -85,6 +85,11 @@ function App() {
     setLetter("");
   }
 
+  function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
+    e.preventDefault();
+    handleConfirm();
+  }
+
   function endGame(result: GameStatus) {
     setResult(result);
     setIsResultModalOpen(true);
@@ -145,7 +150,7 @@ function App() {
 
         <h4>Digite sua letra: </h4>
 
-        <div className={styles.guess}>
+        <form className={styles.guess} onSubmit={handleSubmit}>
           <Input
             autoFocus
             maxLength={1}
@@ -154,10 +159,10 @@ function App() {
             onChange={(e) => setLetter(e.target.value)}
             disabled={result !== null}
           />
-          <Button onClick={handleConfirm} disabled={result !== null}>
+          <Button type="submit" disabled={result !== null}>
             Confirmar{" "}
           </Button>
-        </div>
+        </form>
         <div className={styles.lettersUsedContainer}>
           <h5>Letras utilizadas</h5>
           <LettersUsed data={lettersUsed} />
