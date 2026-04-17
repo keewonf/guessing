@@ -3,22 +3,23 @@ import { useEffect, useState } from "react";
 
 import { WORDS } from "./utils/words";
 import type { Challenge } from "./utils/words";
-import { Button } from "./components/Button";
 import { Header } from "./components/Header";
-import { Input } from "./components/Input";
 import { Letter } from "./components/Letter";
 import { LettersUsed, type LettersUsedProps } from "./components/LettersUsed";
 import { Tips } from "./components/Tips";
 import { GameResult, type GameStatus } from "./components/Modal/GameResult";
+import { GuessForm } from "./components/GuessForm";
 
 function App() {
   const [score, setScore] = useState(0);
   const [letter, setLetter] = useState("");
+  const [wordGuess, setWordGuess] = useState("");
   const [lettersUsed, setLettersUsed] = useState<LettersUsedProps[]>([]);
   const [challenge, setChallenge] = useState<Challenge | null>(null);
   const [result, setResult] = useState<GameStatus | null>(null);
   const [isResultModalOpen, setIsResultModalOpen] = useState(false);
   const wrongAttempts = lettersUsed.filter((item) => !item.correct).length;
+  const isWin = result === "win";
 
   const ATTEMPTS_MARGIN = 2;
   const maxAttempts = (challenge?.word.length ?? 0) + ATTEMPTS_MARGIN;
@@ -48,6 +49,7 @@ function App() {
     setScore(0);
     setLetter("");
     setLettersUsed([]);
+    setWordGuess("");
   }
 
   function handleConfirm() {
@@ -85,9 +87,39 @@ function App() {
     setLetter("");
   }
 
-  function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
+  function handleLetterSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
     handleConfirm();
+  }
+
+  function handleWordSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    if (!challenge) return;
+
+    const guess = wordGuess.trim().toUpperCase();
+    const correct = challenge.word.toUpperCase();
+
+    if (!guess) {
+      return alert("Digite uma palavra!");
+    }
+
+    if (guess === correct) {
+      const uniqueLetters = Array.from(new Set(correct.split("")));
+
+      const allCorrectLetters = uniqueLetters.map((letter) => ({
+        value: letter,
+        correct: true,
+      }));
+
+      setLettersUsed(allCorrectLetters);
+
+      endGame("win");
+    } else {
+      endGame("lose");
+    }
+
+    setWordGuess("");
   }
 
   function endGame(result: GameStatus) {
@@ -141,28 +173,45 @@ function App() {
             return (
               <Letter
                 key={index}
-                value={letterUsed?.value}
-                color={letterUsed?.correct ? "correct" : "default"}
+                value={
+                  isWin
+                    ? letter
+                    : letterUsed?.value 
+                }
+                color={
+                  isWin
+                    ? "correct"
+                    : letterUsed?.correct
+                      ? "correct"
+                      : "default"
+                }
               />
             );
           })}
         </div>
 
-        <h4>Digite sua letra: </h4>
+        <GuessForm
+          formTitle={"Digite sua letra:"}
+          maxLength={1}
+          placeholder={""}
+          value={letter}
+          onValueChange={setLetter}
+          disabled={result !== null}
+          onSubmit={handleLetterSubmit}
+          autoFocus={true}
+        />
 
-        <form className={styles.guess} onSubmit={handleSubmit}>
-          <Input
-            autoFocus
-            maxLength={1}
-            placeholder=""
-            value={letter}
-            onChange={(e) => setLetter(e.target.value)}
-            disabled={result !== null}
-          />
-          <Button type="submit" disabled={result !== null}>
-            Confirmar{" "}
-          </Button>
-        </form>
+        <GuessForm
+          formTitle={"Chutar palavra:"}
+          maxLength={challenge.word.length}
+          placeholder={"Digite a palavra correta: (1 chance)"}
+          value={wordGuess}
+          onValueChange={setWordGuess}
+          disabled={result !== null}
+          onSubmit={handleWordSubmit}
+          inputSize="full"
+          autoFocus={false}
+        />
         <div className={styles.lettersUsedContainer}>
           <h5>Letras utilizadas</h5>
           <LettersUsed data={lettersUsed} />
