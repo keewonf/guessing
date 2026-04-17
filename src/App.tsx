@@ -19,8 +19,10 @@ function App() {
   const [challenge, setChallenge] = useState<Challenge | null>(null);
   const [result, setResult] = useState<GameStatus | null>(null);
   const [isResultModalOpen, setIsResultModalOpen] = useState(false);
+
   const wrongAttempts = lettersUsed.filter((item) => !item.correct).length;
   const isWin = result === "win";
+
   const normalizedWord = challenge
     ? removeAccents(challenge.word.toUpperCase())
     : "";
@@ -46,8 +48,7 @@ function App() {
 
   function startGame(words: Challenge[]) {
     if (words.length === 0) return null;
-    //const index = Math.floor(Math.random() * words.length);
-    //const randomWord = words[index];
+
     setChallenge(words[2]);
 
     setScore(0);
@@ -57,18 +58,15 @@ function App() {
   }
 
   function handleConfirm() {
-    if (result !== null) {
-      return;
-    }
+    if (result !== null) return;
+    if (!challenge) return;
 
-    if (!challenge) {
-      return;
-    }
     if (!letter.trim()) {
       return alert("Digite uma letra!");
     }
 
     const value = removeAccents(letter.toUpperCase());
+
     const exists = lettersUsed.find((used) => used.value === value);
     if (exists) {
       setLetter("");
@@ -76,14 +74,13 @@ function App() {
     }
 
     const challengeLetters = normalizedWord.split("");
-    const hits = challengeLetters.filter((char) => {
-      return char === value;
-    }).length;
+
+    const hits = challengeLetters.filter((char) => char === value).length;
 
     const correct = hits > 0;
     const currentScore = score + hits;
 
-    setLettersUsed((prevState) => [...prevState, { value, correct }]);
+    setLettersUsed((prev) => [...prev, { value, correct }]);
     setScore(currentScore);
 
     setLetter("");
@@ -127,7 +124,6 @@ function App() {
   function endGame(result: GameStatus) {
     setResult(result);
     setIsResultModalOpen(true);
-    //startGame(WORDS);
   }
 
   useEffect(() => {
@@ -135,9 +131,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if (!challenge) {
-      return;
-    }
+    if (!challenge) return;
 
     const timeout = setTimeout(() => {
       if (score === normalizedWord.length) {
@@ -148,14 +142,11 @@ function App() {
         endGame("lose");
       }
     }, 200);
-    return () => {
-      clearTimeout(timeout);
-    };
+
+    return () => clearTimeout(timeout);
   }, [score, lettersUsed.length, challenge, maxAttempts, normalizedWord]);
 
-  if (!challenge) {
-    return;
-  }
+  if (!challenge) return;
 
   return (
     <div className={styles.container}>
@@ -167,13 +158,15 @@ function App() {
         />
 
         <Tips tips={challenge.tips} />
+
         <div className={styles.word}>
           {challenge.word.split("").map((letter, index) => {
+            const normalizedLetter = removeAccents(letter.toUpperCase());
+
             const letterUsed = lettersUsed.find(
-              (used) =>
-                used.value.toUpperCase() ===
-                removeAccents(letter.toUpperCase()),
+              (used) => used.value === normalizedLetter,
             );
+
             return (
               <Letter
                 key={index}
@@ -212,11 +205,13 @@ function App() {
           inputSize="full"
           autoFocus={false}
         />
+
         <div className={styles.lettersUsedContainer}>
           <h5>Letras utilizadas</h5>
           <LettersUsed data={lettersUsed} />
         </div>
       </main>
+
       {result !== null && isResultModalOpen && (
         <GameResult
           challenge={challenge}
