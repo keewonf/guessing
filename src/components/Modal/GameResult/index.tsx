@@ -60,7 +60,7 @@ export function GameResult({
       return onClose();
     }
 
-    return
+    return;
   }
 
   return (
@@ -87,7 +87,7 @@ export function GameResult({
           <strong className={styles.dayWord}>
             {challenge.word.toUpperCase()}
           </strong>
-
+          <h2>Curiosidade:</h2>
           <p>{challenge.trivia}</p>
         </div>
       </div>
