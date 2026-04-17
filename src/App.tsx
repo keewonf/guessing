@@ -17,8 +17,8 @@ function App() {
   const [lettersUsed, setLettersUsed] = useState<LettersUsedProps[]>([]);
   const [challenge, setChallenge] = useState<Challenge | null>(null);
   const [result, setResult] = useState<GameStatus | null>(null);
+  const [isResultModalOpen, setIsResultModalOpen] = useState(false);
   const wrongAttempts = lettersUsed.filter((item) => !item.correct).length;
-  
 
   const ATTEMPTS_MARGIN = 2;
   const maxAttempts = (challenge?.word.length ?? 0) + ATTEMPTS_MARGIN;
@@ -30,8 +30,13 @@ function App() {
 
     if (isConfirmed) {
       setResult(null);
+      setIsResultModalOpen(false);
       startGame(WORDS);
     }
+  }
+
+  function closeModal() {
+    setIsResultModalOpen(false);
   }
 
   function startGame(words: Challenge[]) {
@@ -82,6 +87,7 @@ function App() {
 
   function endGame(result: GameStatus) {
     setResult(result);
+    setIsResultModalOpen(true);
     //startGame(WORDS);
   }
 
@@ -157,13 +163,14 @@ function App() {
           <LettersUsed data={lettersUsed} />
         </div>
       </main>
-      {result !== null && (
+      {result !== null && isResultModalOpen && (
         <GameResult
           challenge={challenge}
           attempts={lettersUsed.length}
           status={result}
           maxAttempts={maxAttempts}
           wrongAttempts={wrongAttempts}
+          onClose={closeModal}
         />
       )}
     </div>

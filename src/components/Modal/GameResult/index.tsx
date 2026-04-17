@@ -9,6 +9,7 @@ type GameResultProps = {
   attempts: number;
   maxAttempts: number;
   wrongAttempts: number;
+  onClose: () => void;
 };
 
 function getDifficultyByWordLength(wordLength: number) {
@@ -44,6 +45,7 @@ export function GameResult({
   attempts,
   maxAttempts,
   wrongAttempts,
+  onClose,
 }: GameResultProps) {
   const isWin = status === "win";
   const difficulty = getDifficultyByWordLength(challenge.word.length);
@@ -53,8 +55,16 @@ export function GameResult({
 
   const title = isWin ? winMessage : "Que pena!";
 
+  function handleClick(e: React.MouseEvent<HTMLDivElement>) {
+    if (e.currentTarget === e.target) {
+      return onClose();
+    }
+
+    return
+  }
+
   return (
-    <div className={styles.container}>
+    <div className={styles.container} onClick={handleClick}>
       <div className={styles.content}>
         <h1>{title}</h1>
         <h2>resultados</h2>
