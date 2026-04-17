@@ -1,7 +1,15 @@
 import styles from "./styles.module.css";
 
-type InputProps = React.ComponentProps<"input">;
+type InputProps = React.ComponentProps<"input"> & {
+  inputSize?: "default" | "full";
+};
 
-export function Input({ ...rest }: InputProps) {
-  return <input type="text" className={styles.input} {...rest}></input>;
+export function Input({ inputSize = "default", ...rest }: InputProps) {
+  return (
+    <input
+      type="text"
+      className={`${styles.input} ${inputSize === "full" ? styles.full : ""}`}
+      {...rest}
+    ></input>
+  );
 }

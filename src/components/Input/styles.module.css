@@ -16,6 +16,10 @@
   transition: all 0.2s;
 }
 
+.full {
+  width: 100%;
+}
+
 .input:hover {
   border: 2px solid var(--purple-300);
 }
