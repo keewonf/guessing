@@ -24,4 +24,14 @@ export const WORDS: Challenge[] = [
     trivia:
       "Meu bico detecta campos elétricos. Sou basicamente um animal com GPS!",
   },
+  {
+    id: 3,
+    word: "Hamburguer",
+    tips: [
+      "Sou um dos lanches de consumo rápido mais populares do mundo inteiro.",
+      "Sou montado em camadas e meu acompanhamento mais clássico são as batatas fritas.",
+      "Sou um sanduíche feito tradicionalmente com pão, carne redonda, queijo e salada.",
+    ],
+    trivia: "O Tato vai me mandar um hoje!",
+  },
 ];

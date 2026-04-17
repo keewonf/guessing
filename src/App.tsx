@@ -44,7 +44,7 @@ function App() {
     if (words.length === 0) return null;
     //const index = Math.floor(Math.random() * words.length);
     //const randomWord = words[index];
-    setChallenge(words[1]);
+    setChallenge(words[2]);
 
     setScore(0);
     setLetter("");
@@ -173,11 +173,7 @@ function App() {
             return (
               <Letter
                 key={index}
-                value={
-                  isWin
-                    ? letter
-                    : letterUsed?.value 
-                }
+                value={isWin ? letter : letterUsed?.value}
                 color={
                   isWin
                     ? "correct"
